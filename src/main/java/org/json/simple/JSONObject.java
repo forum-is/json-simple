@@ -7,8 +7,8 @@ package org.json.simple;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -16,7 +16,7 @@ import java.util.Map;
  * 
  * @author FangYidong<fangyidong@yahoo.com.cn>
  */
-public class JSONObject extends HashMap implements Map, JSONAware, JSONStreamAware{
+public class JSONObject extends LinkedHashMap<String, Object> implements Map<String,Object>, JSONAware, JSONStreamAware{
 	
 	private static final long serialVersionUID = -503443796854799292L;
 	
@@ -31,7 +31,7 @@ public class JSONObject extends HashMap implements Map, JSONAware, JSONStreamAwa
 	 * 
 	 * @param map
 	 */
-	public JSONObject(Map map) {
+	public JSONObject(Map<String,Object> map) {
 		super(map);
 	}
 
@@ -45,14 +45,14 @@ public class JSONObject extends HashMap implements Map, JSONAware, JSONStreamAwa
      * @param map
      * @param out
      */
-	public static void writeJSONString(Map map, Writer out) throws IOException {
+	public static void writeJSONString(Map<String,Object> map, Writer out) throws IOException {
 		if(map == null){
 			out.write("null");
 			return;
 		}
 		
 		boolean first = true;
-		Iterator iter=map.entrySet().iterator();
+		Iterator<Map.Entry<String, Object>> iter=map.entrySet().iterator();
 		
         out.write('{');
 		while(iter.hasNext()){
@@ -60,7 +60,7 @@ public class JSONObject extends HashMap implements Map, JSONAware, JSONStreamAwa
                 first = false;
             else
                 out.write(',');
-			Map.Entry entry=(Map.Entry)iter.next();
+			Map.Entry<String,Object> entry=(Map.Entry<String,Object>)iter.next();
             out.write('\"');
             out.write(escape(String.valueOf(entry.getKey())));
             out.write('\"');
@@ -83,7 +83,7 @@ public class JSONObject extends HashMap implements Map, JSONAware, JSONStreamAwa
 	 * @param map
 	 * @return JSON text, or "null" if map is null.
 	 */
-	public static String toJSONString(Map map){
+	public static String toJSONString(Map<String,Object> map){
 		final StringWriter writer = new StringWriter();
 		
 		try {
